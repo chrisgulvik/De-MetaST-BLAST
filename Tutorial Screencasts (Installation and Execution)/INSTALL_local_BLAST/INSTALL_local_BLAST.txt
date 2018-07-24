@@ -1,0 +1,20 @@
+ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
+
+$ uname -m
+ 32 BIT = i386 or i686
+ 64 BIT = x86_64 
+
+$ ftp ftp.ncbi.nlm.nih.gov
+
+     anonymous
+     email@gmail.com
+
+> cd blast/executables/blast+/LATEST
+> bin
+> get ncbi-blast-2.2.27+-x64-linux.tar.gz
+> bye
+
+$ tar -zxvf ncbi-blast-2.2.27+-x64-linux.tar.gz
+$ cd ~/ncbi-blast-2.2.27+ 
+$ mkdir db data
+$ exit

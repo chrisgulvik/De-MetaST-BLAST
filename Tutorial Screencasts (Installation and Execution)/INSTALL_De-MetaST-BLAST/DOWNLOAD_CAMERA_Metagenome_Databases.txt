@@ -1,0 +1,5 @@
+1- http://portal.camera.calit2.net/
+2- Login
+3- Browse Data -> Project Data -> right click on "GZ" icon to save as download CAM_PROJ_FarmSoil.gz
+4- Logout
+5- Extract/unpackage *.gz to generate *.fa metagenome files

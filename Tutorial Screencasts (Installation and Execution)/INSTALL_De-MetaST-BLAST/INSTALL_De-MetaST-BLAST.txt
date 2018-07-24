@@ -1,0 +1,17 @@
+http://code.google.com/p/de-metast-blast/downloads/list
+
+$ cd ~/Downloads
+$ tar -zxvf De-MetaST-BLAST.tar.gz -C ~/
+
+***EDIT "De-MetaST-BLAST.cpp" FOR BLASTx FUNCTIONALITY
+(SEE README - De-MetaST-BLAST.txt)***
+
+$ cd ~/De-MetaST-BLAST
+$ ls
+
+$ make
+$ ls
+$ cd Table
+$ make
+
+$ exit

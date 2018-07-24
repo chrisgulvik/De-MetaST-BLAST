@@ -1,0 +1,38 @@
+$ cd ~/blast/bin/
+$ perl update_blastdb.pl --verbose nr
+
+	WAIT UNTIL SEE THIS (WILL TAKE A SEVERAL MINS-HRS TO DOWNLOAD!!!):
+		Net::FTP>>> Net::FTP(2.77)
+		Net::FTP>>>   Exporter(5.63)
+		Net::FTP>>>   Net::Cmd(2.29)
+		.....
+		.....
+		.....
+		.....
+		Net::FTP=GLOB(0x209ef28)<<< 150 Opening BINARY mode data connection 
+		for env_nr.06.tar.gz (168296924 bytes)
+		$
+
+$ tar -zxvf ~/blast/bin/*.tar.gz -C ~/blast/db/
+$ rm *.tar.gz *.tar.gz.md5
+$ exit
+
+
+
+
+$ perl update_blastdb.pl env_nr
+$ perl update_blastdb.pl env_nt
+$ perl update_blastdb.pl nr
+$ perl update_blastdb.pl nt
+
+$ perl update_blastdb.pl est_others
+$ perl update_blastdb.pl pdbnt
+$ perl update_blastdb.pl other_genomic
+$ perl update_blastdb.pl taxdb
+
+$ perl update_blastdb.pl gss
+$ perl update_blastdb.pl swissprot
+$ perl update_blastdb.pl pdbaa
+$ perl update_blastdb.pl pdbaa
+$ perl update_blastdb.pl sts
+
