@@ -8,14 +8,14 @@ cd ~/De-MetaST-BLAST
 make
 echo 'export PATH="$PATH:$HOME/De-MetaST-BLAST:$HOME/De-MetaST-BLAST/Table"' >> ~/.bashrc
 source ~/.bashrc
-command -v blastx > /dev/null 2>&1 || {echo 'blast+ needs to be installed still';}
+command -v blastx > /dev/null 2>&1 || { echo 'blast+ needs to be installed still'; }
 ```
 
 ### Example test run (without prompts)
 ```
 gunzip ~/De-MetaST-BLAST/test/AAFX01.1.fsa_nt.NO-Wraps.fasta.gz
 mkdir ~/My_Test && cd ~/My_Test
-echo "$HOME/De-MetaST-BLAST/Primers.txt" | De-MetaST-BLAST ~/De-MetaST-BLAST/AAFX01.1.fsa_nt.NO-Wraps.fa | tee log.txt
+echo "$HOME/De-MetaST-BLAST/Primers.txt" | De-MetaST-BLAST ~/De-MetaST-BLAST/test/AAFX01.1.fsa_nt.NO-Wraps.fasta | tee log.txt
 ```
 
 ++++++++++++++++++++++++++++
