@@ -20,7 +20,7 @@
 using namespace std;
 
 
-int PrimerSearch(vector<Primer_set *> &primers,int filec, char ** files,int max_length){
+int PrimerSearch(vector<Primer_set *> &primers, int filec, char ** files, int max_length){
   ifstream ifs;
   string line, tmp, hit, id;
   int f, r, i, j, k;
@@ -29,8 +29,6 @@ int PrimerSearch(vector<Primer_set *> &primers,int filec, char ** files,int max_
 
   for(int i = 0; i < primers.size(); i++){
     p = primers[i];
-
-
     for(j = 0; j < p->forward.size(); j++){
       p->forward[j] = toupper(p->forward[j]);
     }
@@ -45,7 +43,7 @@ int PrimerSearch(vector<Primer_set *> &primers,int filec, char ** files,int max_
     p->Rreverse = complement(flip(p->Rreverse));  //Build reverse-complement of Reverse
 
     //Convert all to bitstrings for bitwise comparison
-    p->forward = convert(p->forward);            
+    p->forward = convert(p->forward);
     p->reverse = convert(p->reverse);
     p->Rforward = convert(p->Rforward);
     p->Rreverse = convert(p->Rreverse);
@@ -60,8 +58,6 @@ int PrimerSearch(vector<Primer_set *> &primers,int filec, char ** files,int max_
     fflush(stdout);
 
 
-
-
     while(getline(ifs, tmp)){  //line loop
 
       if(tmp.find(">") != string::npos)
@@ -69,25 +65,20 @@ int PrimerSearch(vector<Primer_set *> &primers,int filec, char ** files,int max_
         id = tmp.substr(1, tmp.find("/")-2);  //test for info line
         i = 0;
       }else{
-
-
-
         line = convert(tmp);                      //convert sequence to bitstring for comparison
 
         for(k = 0; k < primers.size(); k++){
           p = primers[k];
-
           if(p->forward != ""){
-
             f = Sfind(line, p->forward, 0);
             while(f != string::npos){                   //Forward find Loop
-    
               if(p->Rreverse != ""){
                 r = Sfind(line, p->Rreverse, f);
                 while(r != string::npos){                //Rreverse find Loop
                   hit = tmp.substr(f, r-f+p->Rreverse.size());   //Pull hit from unconverted sequence
-           
-                  fprintf((r-f> max_length)? p->non_ofs: p->ofs,  ">%s-%d-FR-%s\n%s\n\n", files[j], 1+i++,  id.c_str(), hit.c_str());
+                  fprintf((r-f> max_length)? p->non_ofs: p->ofs,
+                    ">%s-%d-FR-%s\n%s\n\n", files[j], 1+i++, id.c_str(),
+                    hit.c_str());
                   fflush(p->ofs);
                   r = Sfind(line, p->Rreverse, r+1);
                 }
@@ -95,16 +86,15 @@ int PrimerSearch(vector<Primer_set *> &primers,int filec, char ** files,int max_
               r = Sfind(line, p->Rforward, f);            
               while(r != string::npos){                //Rreverse find Loop
                 hit = tmp.substr(f, r-f+p->Rforward.size());   //Pull hit from unconverted sequence
-                fprintf((r-f> max_length)? p->non_ofs: p->ofs,  ">%s-%d-FF-%s\n%s\n\n", files[j], 1+i++,  id.c_str(), hit.c_str());
+                fprintf((r-f> max_length)? p->non_ofs: p->ofs,
+                  ">%s-%d-FF-%s\n%s\n\n", files[j], 1+i++, id.c_str(),
+                  hit.c_str());
                 fflush(p->ofs);
                 r = Sfind(line, p->Rforward, r+1);
               }
-
-
               f = Sfind(line, p->forward, f+1);
             }
           }
-
 
           //Search for reverse string
           if(p->reverse != ""){
@@ -115,17 +105,21 @@ int PrimerSearch(vector<Primer_set *> &primers,int filec, char ** files,int max_
                 while(r != string::npos){              //Reverse find Loop
                   hit = tmp.substr(f, r-f+p->Rforward.size());  //Pull hit from unconverted sequence
                   hit = complement(flip(hit));               //complement and flip it 
-                  fprintf((r-f> max_length)? p->non_ofs: p->ofs, ">%s-%d-RF-%s\n%s\n\n", files[j], 1+i++,  id.c_str(), hit.c_str());
+                  fprintf((r-f> max_length)? p->non_ofs: p->ofs,
+                    ">%s-%d-RF-%s\n%s\n\n", files[j], 1+i++, id.c_str(),
+                    hit.c_str());
                   fflush(p->ofs);
                   r = Sfind(line, p->Rforward, r+1);
                 }
               }
 
-              r = Sfind(line, p->Rreverse, f);            
+              r = Sfind(line, p->Rreverse, f);
               while(r != string::npos){                //Rreverse find Loop
                 hit = tmp.substr(f, r-f+p->reverse.size());   //Pull hit from unconverted sequence
                 hit = complement(flip(hit));
-                fprintf((r-f> max_length)? p->non_ofs: p->ofs,  ">%s-%d-RR-%s\n%s\n\n", files[j], 1+i++,  id.c_str(), hit.c_str());
+                fprintf((r-f> max_length)? p->non_ofs: p->ofs, 
+                  ">%s-%d-RR-%s\n%s\n\n", files[j], 1+i++, id.c_str(),
+                  hit.c_str());
                 fflush(p->ofs);
                 r = Sfind(line, p->Rreverse, r+1);
               }
@@ -141,6 +135,3 @@ int PrimerSearch(vector<Primer_set *> &primers,int filec, char ** files,int max_
   printf("\n");
   return 0;
 }
-
-
-

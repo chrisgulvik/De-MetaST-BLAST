@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 class Primer_set{
  public:
    string forward, reverse, Rforward, Rreverse;
@@ -14,4 +15,4 @@ class Primer_set{
    string non_blasted;
 };
 
-int PrimerSearch(vector < Primer_set *> &primers,int filec, char ** files,int max_length = 5000);
+int PrimerSearch(vector < Primer_set *> &primers, int filec, char ** files, int max_length = 5000);

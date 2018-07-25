@@ -25,24 +25,21 @@
 
 using namespace std;
 
-//Set BlastDir to the full path to your blastx program
-#define BlastDir "/home/user/blast/bin/blastx"
-
-//Set BlastDatabase to the full path to the Database
-//you would like to use for local blast
-#define BlastDatabase "nr" 
 
 //Set to 1 for Remote blast hosted by NCBI
 //Set to 0 for a Local blast using your database
 bool RemoteBlast = 1;
 
+//Set BlastDatabase to the full path to the Database
+//if querying a Local blast database
+#define BlastDatabase "nr" 
+
+#define BlastxBin "blastx"
 #define max_date 15
+
+
 int main(int argc, char ** argv){
-
-
-  bool DEFAULT;
-
-  DEFAULT = false;
+  bool DEFAULT = false;
   char * args[14];
   int rv(0), pid, status;
   int fd2;
@@ -66,7 +63,6 @@ int main(int argc, char ** argv){
     fprintf(stderr, "USAGE: De-MetaST Databases ...\n");
     exit(1);
   }
-
 
   cout << "Input Filename for Primers (press Enter to use Primers.txt)\n";
   getline(cin, fn);
@@ -109,15 +105,19 @@ int main(int argc, char ** argv){
     }
     for(int i = 0; i < primers.size(); i++){
       p = primers[i];
-      sprintf(buff, "De-MetaST_hits_%s(%dof%d).fasta",date,  i+1, (int) primers.size());
+      sprintf(buff, "De-MetaST_hits_%s(%dof%d).fasta",
+        date, i+1, (int) primers.size());
       p->ofs = fopen(buff, "w");
       p->blast_hits = buff;
-      sprintf(buff, "non-blasted_De-MetaST_hits_%s(%dof%d).fa",date,  i+1, (int) primers.size());
+      sprintf(buff, "non-blasted_De-MetaST_hits_%s(%dof%d).fa",
+        date, i+1, (int) primers.size());
       p->non_ofs = fopen(buff, "w");
       p->non_blasted = buff;
-      sprintf(buff, "BLASTx_results_%s(%dof%d).xml",date,  i+1, (int) primers.size());
+      sprintf(buff, "BLASTx_results_%s(%dof%d).xml",
+        date, i+1, (int) primers.size());
       p->blast_results = buff;
-      sprintf(buff, "De-MetaST-BLAST_functions_%s(%dof%d).txt", date, i+1, (int) primers.size());
+      sprintf(buff, "De-MetaST-BLAST_functions_%s(%dof%d).tsv",
+        date, i+1, (int) primers.size());
       p->blast_functions = buff;
     }
     PrimerSearch(primers, argc-1, argv+1);
@@ -125,7 +125,6 @@ int main(int argc, char ** argv){
 
   for(int i = 0; i < primers.size(); i++){
     p = primers[i];
-
 
     //Local BLASTx
     if(!RemoteBlast){
@@ -166,30 +165,27 @@ int main(int argc, char ** argv){
     cout << "BLASTx running ..." << endl;
     pid = fork();
     if(pid == 0){
-      rv = execv(BlastDir, args);
+      rv = execvp(BlastxBin, args);
       perror("De-MetaST-BLAST");
       exit(1);
     }
-
     rv = wait(&status);
     cout << "BLASTx finished" << endl;
 
     //Build Tab-delimited Table from XML
     pid = fork();
     if(pid == 0){
-      fd2 = open(p->blast_functions.c_str(), O_WRONLY | O_TRUNC | O_CREAT, 0644);
+      fd2 = open(p->blast_functions.c_str(), O_WRONLY | O_TRUNC | O_CREAT,
+        0644);
       if(dup2(fd2, 1) != 1){
         perror("De-MetaST-BLAST.cpp: dup2(f2, 1)");
         exit(1);
       }
       close(fd2);		
-
-      rv = execl("./Table/Table_builder", "Table_builder", p->blast_hits.c_str(), p->blast_results.c_str(), NULL);
+      rv = execlp("BLASTxml_to_tsv", "BLASTxml_to_tsv",
+        p->blast_hits.c_str(), p->blast_results.c_str(), (char *) NULL);
       exit(1);
-
-
     }
     rv = wait(&status);
   }
-
 }

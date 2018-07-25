@@ -1,5 +1,7 @@
 #include <string>
+
 using namespace std;
+
 
 string complement(string);  //complements a string
 char   comp2(char);

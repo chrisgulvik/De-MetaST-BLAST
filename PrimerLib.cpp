@@ -14,57 +14,57 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include <string>
 #include <iostream>
 #include <assert.h>
-#include "Primer.h" 
+#include "Primer.h"
+
 using namespace std;
+
 
 const string comparray=  "TVGHZZCDZZMZKNZZZYSAZBWNRZ";
 const string array = "BOCNZZELZZMZDPZZZFGIZHJPKZ";
 string complement(string s)  //converts s to its complement
 {
-    for(int i = 0; i < s.size(); i++){
-        s[i] = comp2((char) s[i]);
-    }
-    return s;
+  for(int i = 0; i < s.size(); i++){
+    s[i] = comp2((char) s[i]);
+  }
+  return s;
 }
 
 
 char comp2(char c)
 {
-    return comparray[c-'A'];
+  return comparray[c-'A'];
 }
 
 string flip(string s)  //reverses the order of the string
 {
-    string tmp;
+  string tmp;
 
-    tmp = "";
-    for(int i = 0; i < s.size(); i++){
-        tmp = s[i] + tmp;
-    }
-    return tmp;
+  tmp = "";
+  for(int i = 0; i < s.size(); i++){
+    tmp = s[i] + tmp;
+  }
+  return tmp;
 }
 
 
 string convert(string s)
 {
-	for(int i = 0; i < s.size(); i++){
-		s[i] = (array[s[i]-'A'] - 'A');
-	}
-	return s;
+  for(int i = 0; i < s.size(); i++){
+    s[i] = (array[s[i]-'A'] - 'A');
+  }
+  return s;
 }
 
 
 int Sfind(string s1,string s2,int in){  //normal string find with comp function as bitwise And instead of exact match
-    int i, j;
+  int i, j;
 
-    for(i = in; i < s1.size(); i++){  //run through search string
-        for(j = 0; j < s2.size(); j++){ //run through query string
-            if( (i+j) < s1.size() && ((char)(s1[i+j] & s2[j]) == (char)s1[i+j])) continue;
-            else break;
-        }
-        if(j == s2.size()) return i;
+  for(i = in; i < s1.size(); i++){  //run through search string
+    for(j = 0; j < s2.size(); j++){ //run through query string
+      if( (i+j) < s1.size() && ((char)(s1[i+j] & s2[j]) == (char)s1[i+j])) continue;
+      else break;
     }
-    return -1;
+    if(j == s2.size()) return i;
+  }
+  return -1;
 }
-
-
